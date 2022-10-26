@@ -62,7 +62,5 @@ class Score:
             for pool_index in range(self.number_of_pools):
                 score = min(pool_capacity[remove_index][pool_index], score)
 
-        for row in pool_capacity:
-            print(*row)
         return score
 
