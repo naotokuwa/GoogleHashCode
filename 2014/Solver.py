@@ -1,8 +1,8 @@
 from Server import Server
-
+from Input import Input
 
 class Solver:
-    def __init__(self, input_info):
+    def __init__(self, input_info: Input):
         self.UNAVAILABLE = "x"
         self.AVAILABLE = "o"
 
