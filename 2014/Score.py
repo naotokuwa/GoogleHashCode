@@ -2,6 +2,7 @@ from Input import Input
 from Row import Row
 from Server import Server
 
+
 class Score:
     def __init__(self, file_path, input_info: Input):
 
@@ -30,19 +31,17 @@ class Score:
             server_info_list = server_info.split()
 
             if len(server_info_list) == 3:
-                try:
-                    row_index, first_index, pool_index = map(int, server_info_list)
-                    server_info = self.servers[server_index]
+                row_index, first_index, pool_index = map(int, server_info_list)
+                server_info = self.servers[server_index]
 
-                    server = Server(server_info[0], server_info[1])
-                    server.pool_index = pool_index
-                    server.row_index = row_index
-                    server.first_index = first_index
+                server = Server(server_info[0], server_info[1])
+                server.pool_index = pool_index
+                server.row_index = row_index
+                server.first_index = first_index
 
-                    # Add a server to a row
-                    self.servers_by_row[row_index].add_server(server)
-                except RuntimeError:
-                    raise "A server info does contain integers."
+                # Add a server to a row
+                self.servers_by_row[row_index].add_server(server)
+
             elif len(server_info_list) == 1:
                 continue
             else:
@@ -57,12 +56,13 @@ class Score:
 
                 row = self.servers_by_row[row_index]
                 for pool_index in range(self.number_of_pools):
-                    pool_capacity[row_index][pool_index] += row.sum_of_capacity_by_pool(pool_index)
-
+                    pool_capacity[remove_index][pool_index] += row.sum_of_capacity_by_pool(pool_index)
         score = float("INF")
         for remove_index in range(self.rows):
             for pool_index in range(self.number_of_pools):
-                score = min(pool_capacity[row_index][pool_index], score)
+                score = min(pool_capacity[remove_index][pool_index], score)
 
+        for row in pool_capacity:
+            print(*row)
         return score
 
