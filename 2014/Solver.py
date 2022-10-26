@@ -1,6 +1,7 @@
 from Server import Server
 from Input import Input
 
+
 class Solver:
     def __init__(self, input_info: Input):
         self.UNAVAILABLE = "x"
@@ -77,10 +78,28 @@ class Solver:
         return -1
 
     def assign_pool(self):
-        for server_index in range(len(self.servers)):
-            if self.servers[server_index].row_index >= 0:
-                server = self.servers[server_index]
-                server.pool_index = server_index % self.number_of_pools
+        pool_capacity = [[0] * self.number_of_pools for _ in range(self.rows)]
+
+        for server_index, server in enumerate(self.servers):
+            min_pool_index = self.get_min_pool_capacity(pool_capacity)
+            self.servers[server_index].pool_index = min_pool_index
+
+            for row_index in range(self.rows):
+                if row_index == server.row_index:
+                    continue
+                pool_capacity[row_index][min_pool_index] += server.capacity
+
+    # Get minimum pool and assign server to them
+    def get_min_pool_capacity(self, pool_capacity):
+        global_min = float("INF")
+        min_pool_index = -1
+
+        for remove_index in range(self.rows):
+            for pool_index in range(self.number_of_pools):
+                if global_min > pool_capacity[remove_index][pool_index]:
+                    global_min = pool_capacity[remove_index][pool_index]
+                    min_pool_index = pool_index
+        return min_pool_index
 
     def print_grids(self):
         for row in self.grids:
