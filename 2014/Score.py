@@ -34,7 +34,7 @@ class Score:
                 row_index, first_index, pool_index = map(int, server_info_list)
                 server_info = self.servers[server_index]
 
-                server = Server(server_info[0], server_info[1])
+                server = Server(server_info[0], server_info[1], server_index)
                 server.pool_index = pool_index
                 server.row_index = row_index
                 server.first_index = first_index

@@ -25,7 +25,7 @@ class Solver:
     def extract_server_info(self):
         for i in range(self.numer_of_servers):
             size, capacity = self.input.servers[i]
-            server = Server(size, capacity)
+            server = Server(size, capacity, i)
             server.index = i
             self.servers.append(server)
 
@@ -83,13 +83,14 @@ class Solver:
         pool_capacity = [[0] * self.number_of_pools for _ in range(self.rows)]
 
         for server_index, server in enumerate(self.servers):
-            min_pool_index = self.get_min_pool_capacity(pool_capacity)
-            self.servers[server_index].pool_index = min_pool_index
+            if server.is_used:
+                min_pool_index = self.get_min_pool_capacity(pool_capacity)
+                self.servers[server_index].pool_index = min_pool_index
 
-            for row_index in range(self.rows):
-                if row_index == server.row_index:
-                    continue
-                pool_capacity[row_index][min_pool_index] += server.capacity
+                for row_index in range(self.rows):
+                    if row_index == server.row_index:
+                        continue
+                    pool_capacity[row_index][min_pool_index] += server.capacity
 
     # Get minimum pool and assign server to them
     def get_min_pool_capacity(self, pool_capacity):
