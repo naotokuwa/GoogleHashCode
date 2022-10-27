@@ -23,8 +23,10 @@ class Solver:
             self.grids[row][column] = self.UNAVAILABLE
 
     def extract_server_info(self):
-        for size, capacity in self.input.servers:
+        for i in range(self.numer_of_servers):
+            size, capacity = self.input.servers[i]
             server = Server(size, capacity)
+            server.index = i
             self.servers.append(server)
 
     # What I want, find a server which I can put into a specific row
@@ -106,8 +108,10 @@ class Solver:
             print(*row)
 
     def output_to_file(self, file_path):
+        self.servers.sort(key=lambda x: x.capacity, reverse=True)
         self.assign_servers()
         self.assign_pool()
+        self.servers.sort(key=lambda x: x.index, reverse=False)
 
         with open(file_path, "w") as f:
             for server in self.servers:

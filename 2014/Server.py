@@ -2,6 +2,7 @@ class Server:
     def __init__(self, size, capacity):
         self.size = size
         self.capacity = capacity
+        self.index = 0
         self.is_used = False
         self.row_index = -1
         self.first_index = -1
